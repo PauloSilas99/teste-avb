@@ -1,16 +1,21 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import { auth } from "@/app/api/auth/[...nextauth]/route"
+import { getToken } from "next-auth/jwt"
 
 export async function middleware(request: NextRequest) {
-  const session = await auth()
+  // Usar getToken que é leve e não importa toda a configuração do NextAuth
+  const token = await getToken({ 
+    req: request,
+    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET
+  })
+  
   const { pathname } = request.nextUrl
 
   // Rotas públicas
   const isPublicRoute = pathname === "/login" || pathname === "/register" || pathname.startsWith("/api/auth/")
   
   // Se não autenticado e tentando acessar rota protegida → redirecionar para /login
-  if (!session && !isPublicRoute) {
+  if (!token && !isPublicRoute) {
     const loginUrl = new URL("/login", request.url)
     const response = NextResponse.redirect(loginUrl)
     // Adicionar headers para prevenir cache e voltar ao histórico
@@ -21,14 +26,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // Se autenticado e tentando acessar /login ou /register → redirecionar para /dashboard
-  if (session && (pathname === "/login" || pathname === "/register")) {
+  if (token && (pathname === "/login" || pathname === "/register")) {
     const dashboardUrl = new URL("/dashboard", request.url)
     return NextResponse.redirect(dashboardUrl)
   }
 
   // Para rotas protegidas, adicionar headers de cache
   const response = NextResponse.next()
-  if (!isPublicRoute && session) {
+  if (!isPublicRoute && token) {
     response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
     response.headers.set('Pragma', 'no-cache')
     response.headers.set('Expires', '0')

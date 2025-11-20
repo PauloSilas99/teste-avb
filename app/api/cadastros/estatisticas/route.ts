@@ -27,28 +27,28 @@ export async function GET() {
     })
 
     // Agrupar por composição
-    const composicaoStats = cadastros.reduce((acc, cadastro) => {
+    const composicaoStats = cadastros.reduce((acc: Record<string, number>, cadastro) => {
       const nome = cadastro.composicao.nome
       acc[nome] = (acc[nome] || 0) + 1
       return acc
     }, {} as Record<string, number>)
 
     // Agrupar por formato
-    const formatoStats = cadastros.reduce((acc, cadastro) => {
+    const formatoStats = cadastros.reduce((acc: Record<string, number>, cadastro) => {
       const nome = cadastro.formato.nome
       acc[nome] = (acc[nome] || 0) + 1
       return acc
     }, {} as Record<string, number>)
 
     // Agrupar por norma técnica
-    const normaTecnicaStats = cadastros.reduce((acc, cadastro) => {
+    const normaTecnicaStats = cadastros.reduce((acc: Record<string, number>, cadastro) => {
       const nome = cadastro.normaTecnica.nome
       acc[nome] = (acc[nome] || 0) + 1
       return acc
     }, {} as Record<string, number>)
 
     // Agrupar por acabamento
-    const acabamentoStats = cadastros.reduce((acc, cadastro) => {
+    const acabamentoStats = cadastros.reduce((acc: Record<string, number>, cadastro) => {
       const nome = cadastro.acabamento.nome
       acc[nome] = (acc[nome] || 0) + 1
       return acc

@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id              String        @id @default(uuid())
+  nome            String
+  email           String        @unique
+  senha           String
+  dataCriacao     DateTime      @default(now())
+  dataAtualizacao DateTime      @updatedAt
+  cadastrosAco    CadastroAco[]
+}
+
+model CadastroAco {
+  id              String                @id @default(uuid())
+  nomeCadastro    String
+  dataCriacao     DateTime              @default(now())
+  dataAtualizacao DateTime              @updatedAt
+  usuarioId       String
+  composicaoId    String
+  formatoId       String
+  normaTecnicaId  String
+  acabamentoId    String
+  acabamento      AcabamentoSuperficial @relation(fields: [acabamentoId], references: [id])
+  composicao      Composicao            @relation(fields: [composicaoId], references: [id])
+  formato         Formato               @relation(fields: [formatoId], references: [id])
+  normaTecnica    NormaTecnica          @relation(fields: [normaTecnicaId], references: [id])
+  usuario         Usuario               @relation(fields: [usuarioId], references: [id])
+}
+
+model Composicao {
+  id           String        @id @default(uuid())
+  nome         String        @unique
+  cadastrosAco CadastroAco[]
+}
+
+model Formato {
+  id           String        @id @default(uuid())
+  nome         String        @unique
+  cadastrosAco CadastroAco[]
+}
+
+model NormaTecnica {
+  id           String        @id @default(uuid())
+  nome         String        @unique
+  cadastrosAco CadastroAco[]
+}
+
+model AcabamentoSuperficial {
+  id           String        @id @default(uuid())
+  nome         String        @unique
+  cadastrosAco CadastroAco[]
+}

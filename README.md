@@ -87,7 +87,7 @@ npm start
 
 Acesse [http://localhost:3000](http://localhost:3000)
 
-## 📦 Scripts Disponíveis
+## Scripts Disponíveis
 
 - `npm run dev` - Inicia servidor de desenvolvimento
 - `npm run build` - Build de produção

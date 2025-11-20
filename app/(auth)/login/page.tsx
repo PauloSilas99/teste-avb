@@ -60,7 +60,7 @@ export default function Login() {
             </p>
           </div>
             <a 
-              href="https://github.com" 
+              href="https://github.com/PauloSilas99/teste-avb" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-block px-8 py-3 rounded-full border-2 border-white bg-transparent text-white font-semibold hover:bg-white hover:text-blue-600 transition-colors"

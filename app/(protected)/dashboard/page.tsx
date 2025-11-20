@@ -44,7 +44,7 @@ export default function Dashboard() {
       <div className="h-full flex flex-col overflow-hidden">
         {/* Área fixa com botões */}
         <div className="flex-shrink-0 p-4 sm:p-6 lg:p-8 pb-0">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">Projeto desenvolvido por <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Paulo Silas</a></h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">Projeto desenvolvido por <a href="https://github.com/PauloSilas99" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Paulo Silas</a></h3>
           <div className="flex items-center gap-2 flex-wrap">
             <button 
             className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none " 

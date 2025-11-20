@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Teste AVB
 
-## Getting Started
+Sistema de gerenciamento de cadastros de materiais de aço desenvolvido com Next.js, TypeScript e Prisma.
 
-First, run the development server:
+## Tecnologias Utilizadas
+
+### Frontend
+- **Next.js 16** 
+- **TypeScript** 
+- **Tailwind CSS 4** 
+- **Heroicons** - Ícones React
+- **Recharts** - Gráficos e visualizações de dados
+
+### Backend & Autenticação
+- **NextAuth v5** - Autenticação e gerenciamento de sessão
+- **bcryptjs** - Hash de senhas
+- **API Routes** - Endpoints RESTful
+
+### Banco de Dados
+- **Prisma ORM** - ORM para TypeScript
+- **PostgreSQL** - Banco de dados (Neon Database)
+- **@neondatabase/serverless** - Driver para Neon
+
+## Funcionalidades
+
+### Autenticação
+- Login com email e senha
+- Registro de novos usuários
+- Proteção de rotas com middleware
+- Sessão persistente com JWT
+- Modal de confirmação para logout
+- Redirecionamento automático baseado em autenticação
+
+### Cadastro de Materiais
+- CRUD completo de cadastros de aço
+- Campos: Nome, Composição, Formato, Norma Técnica, Acabamento
+- Modal de criação/edição
+- Lista de materiais com scroll otimizado
+- Exclusão com modal de confirmação
+- Validação de formulários
+
+### Dashboard e Relatórios
+- Dashboard com lista de cadastros
+- Página de relatórios com gráficos
+- Gráfico de barras (distribuição por composição)
+- Gráfico de pizza (distribuição por acabamento)
+- Estatísticas em tempo real
+- Layout responsivo
+
+### Instalação
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Instalar dependências
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Configuração do Banco de Dados
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Gerar cliente Prisma
+npm run db:generate
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Aplicar migrations
+npm run db:push
+# ou
+npm run db:migrate
 
-## Learn More
+# (Opcional) Popular banco com dados de teste
+npm run seed
 
-To learn more about Next.js, take a look at the following resources:
+# Abrir Prisma Studio
+npm run db:studio
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Executar o Projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Desenvolvimento
+npm run dev
 
-## Deploy on Vercel
+# Build de produção
+npm run build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Iniciar produção
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Acesse [http://localhost:3000](http://localhost:3000)
+
+## 📦 Scripts Disponíveis
+
+- `npm run dev` - Inicia servidor de desenvolvimento
+- `npm run build` - Build de produção
+- `npm start` - Inicia servidor de produção
+- `npm run lint` - Executa ESLint
+- `npm run db:generate` - Gera cliente Prisma
+- `npm run db:push` - Aplica schema ao banco
+- `npm run db:migrate` - Executa migrations
+- `npm run db:studio` - Abre Prisma Studio
+- `npm run seed` - Popula banco com dados de teste
+
+## Modelos de Dados
+
+- **Usuario** - Usuários do sistema
+- **CadastroAco** - Cadastros de materiais de aço
+- **Composicao** - Tipos de composição
+- **Formato** - Formatos de material
+- **NormaTecnica** - Normas técnicas
+- **AcabamentoSuperficial** - Tipos de acabamento
+
+## Segurança
+
+- Senhas hasheadas com bcrypt
+- Proteção de rotas com middleware
+- Validação de sessão em todas as requisições
+- Headers de cache para prevenir navegação após logout
+- CSRF protection do NextAuth
+
+## Responsividade
+
+- Layout adaptável para mobile, tablet e desktop
+- Componentes otimizados para diferentes tamanhos de tela
+- Scroll otimizado em listas e modais
+
+Projeto de teste para AVB.

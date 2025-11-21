@@ -34,12 +34,16 @@ export default function Login() {
       })
 
       if (result?.error) {
+        console.error("Erro no login:", result.error)
         setErro("Email ou senha incorretos")
       } else if (result?.ok) {
         // Usar replace para não adicionar ao histórico
         router.replace("/dashboard")
+      } else {
+        setErro("Erro ao fazer login. Tente novamente.")
       }
     } catch (error) {
+      console.error("Erro ao fazer login:", error)
       setErro("Erro ao fazer login. Tente novamente.")
     } finally {
       setCarregando(false)

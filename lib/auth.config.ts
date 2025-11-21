@@ -19,24 +19,29 @@ export const authConfig: NextAuthConfig = {
         const email = credentials.email as string
         const senha = credentials.senha as string
 
-        const usuario = await prisma.usuario.findUnique({
-          where: { email }
-        })
+        try {
+          const usuario = await prisma.usuario.findUnique({
+            where: { email }
+          })
 
-        if (!usuario) {
+          if (!usuario) {
+            return null
+          }
+
+          const senhaValida = await bcrypt.compare(senha, usuario.senha)
+
+          if (!senhaValida) {
+            return null
+          }
+
+          return {
+            id: usuario.id,
+            email: usuario.email,
+            nome: usuario.nome
+          }
+        } catch (error) {
+          console.error("Erro ao autenticar usuário:", error)
           return null
-        }
-
-        const senhaValida = await bcrypt.compare(senha, usuario.senha)
-
-        if (!senhaValida) {
-          return null
-        }
-
-        return {
-          id: usuario.id,
-          email: usuario.email,
-          nome: usuario.nome
         }
       }
     })
@@ -61,6 +66,10 @@ export const authConfig: NextAuthConfig = {
       }
       return session
     }
+  },
+  pages: {
+    signIn: "/login",
+    error: "/login",
   },
   trustHost: true,
 }

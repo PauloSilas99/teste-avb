@@ -65,7 +65,7 @@ export const authConfig: NextAuthConfig = {
         session.user.nome = token.nome as string
       }
       return session
-    }
+    },
   },
   pages: {
     signIn: "/login",

@@ -43,17 +43,16 @@ export default function Register() {
       })
 
       if (result?.error) {
+        console.error("Erro no login automático:", result.error)
         // Se o login automático falhar, redireciona para /login
-        setTimeout(() => {
-          window.location.href = "/login"
-        }, 100)
+        window.location.href = "/login"
       } else if (result?.ok) {
-        // Login bem-sucedido - aguardar um momento para o cookie ser definido
-        // Não resetar carregando para manter o estado visual durante o redirect
-        setTimeout(() => {
-          window.location.href = "/dashboard"
-        }, 100)
+        console.log("Login automático bem-sucedido, redirecionando para /dashboard")
+        // Login bem-sucedido - aguardar um breve momento para o cookie ser definido
+        await new Promise(resolve => setTimeout(resolve, 150))
+        window.location.href = "/dashboard"
       } else {
+        console.error("Login automático falhou sem erro específico:", result)
         setErro("Conta criada, mas erro ao fazer login. Faça login manualmente.")
         setCarregando(false)
       }

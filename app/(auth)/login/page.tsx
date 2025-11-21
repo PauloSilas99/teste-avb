@@ -27,12 +27,13 @@ export default function Login() {
         setErro("Email ou senha incorretos")
         setCarregando(false)
       } else if (result?.ok) {
-        // Login bem-sucedido - aguardar um momento para o cookie ser definido
-        // Não resetar carregando para manter o estado visual durante o redirect
-        setTimeout(() => {
-          window.location.href = "/dashboard"
-        }, 100)
+        console.log("Login bem-sucedido, redirecionando para /dashboard")
+        // Login bem-sucedido - aguardar um breve momento para o cookie ser definido
+        // Usar window.location.href para forçar reload completo da página
+        await new Promise(resolve => setTimeout(resolve, 150))
+        window.location.href = "/dashboard"
       } else {
+        console.error("Login falhou sem erro específico:", result)
         setErro("Erro ao fazer login. Tente novamente.")
         setCarregando(false)
       }

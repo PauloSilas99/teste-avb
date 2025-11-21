@@ -17,23 +17,29 @@ export default function Login() {
     setCarregando(true)
 
     try {
-      // Usar redirect: true para que o NextAuth gerencie o redirecionamento automaticamente
-      // Isso garante que o cookie de sessão seja definido corretamente antes do redirecionamento
+      // Forma mais simples: usar redirect: false e fazer redirecionamento manual
       const result = await signIn("credentials", {
         email,
         senha,
-        redirect: true,
-        callbackUrl: "/dashboard",
-      }) as { error?: string } | void
+        redirect: false,
+      })
 
-      // Quando redirect: true, o signIn retorna void em caso de sucesso (redireciona automaticamente)
-      // ou um objeto com error em caso de falha
-      if (result && "error" in result) {
+      if (result?.error) {
         setErro("Email ou senha incorretos")
         setCarregando(false)
+      } else if (result?.ok) {
+        // Login bem-sucedido
+        // Aguardar tempo suficiente para o cookie de sessão ser definido
+        // Neon DB pode ter latência em produção (cold start, etc), então aguardamos 1.5 segundos
+        await new Promise(resolve => setTimeout(resolve, 1500))
+        
+        // Redirecionar para dashboard
+        // window.location.href força reload completo, garantindo que middleware e layout vejam o cookie
+        window.location.href = "/dashboard"
+      } else {
+        setErro("Erro ao fazer login. Tente novamente.")
+        setCarregando(false)
       }
-      // Se não houver erro, o NextAuth cuida do redirecionamento automaticamente
-      // Com redirect: true, não precisamos fazer redirecionamento manual
     } catch (error) {
       console.error("Erro ao fazer login:", error)
       setErro("Erro ao fazer login. Tente novamente.")

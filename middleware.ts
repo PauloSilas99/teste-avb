@@ -3,16 +3,18 @@ import type { NextRequest } from "next/server"
 import { getToken } from "next-auth/jwt"
 
 export async function middleware(request: NextRequest) {
-  // Usar getToken que é leve e não importa toda a configuração do NextAuth
-  const token = await getToken({ 
-    req: request,
-    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET
-  })
-  
   const { pathname } = request.nextUrl
-
+  
   // Rotas públicas
   const isPublicRoute = pathname === "/login" || pathname === "/register" || pathname.startsWith("/api/auth/")
+  
+  // Usar getToken que é leve e não importa toda a configuração do NextAuth
+  // Deixar o getToken detectar automaticamente o nome do cookie
+  const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET
+  const token = await getToken({ 
+    req: request,
+    secret: secret,
+  })
   
   // Se não autenticado e tentando acessar rota protegida → redirecionar para /login
   if (!token && !isPublicRoute) {

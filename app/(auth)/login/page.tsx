@@ -37,9 +37,13 @@ export default function Login() {
         console.error("Erro no login:", result.error)
         setErro("Email ou senha incorretos")
       } else if (result?.ok) {
-        // Usar replace para não adicionar ao histórico
-        router.replace("/dashboard")
+        console.log("Login bem-sucedido, redirecionando...")
+        // Aguardar um breve momento para garantir que o cookie foi definido
+        await new Promise(resolve => setTimeout(resolve, 100))
+        // Forçar reload completo para garantir que o cookie seja lido pelo middleware
+        window.location.href = "/dashboard"
       } else {
+        console.error("Login falhou sem erro específico:", result)
         setErro("Erro ao fazer login. Tente novamente.")
       }
     } catch (error) {

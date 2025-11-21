@@ -65,11 +65,19 @@ Após configurar as variáveis e fazer o redeploy:
 
 ## Troubleshooting
 
-### Login não funciona / Página carrega mas nada acontece
-- ✅ Verifique se `NEXTAUTH_URL` está configurada com a URL correta da Vercel
-- ✅ Certifique-se de que fez o redeploy após adicionar as variáveis
-- ✅ Verifique se `NEXTAUTH_SECRET` está configurada
-- ✅ Verifique os logs da Vercel para erros específicos
+### Login não funciona / Página carrega mas nada acontece / Erro 307 Redirect
+**Sintomas**: Ao tentar fazer login, a página carrega mas não redireciona, ou você vê um erro 307 Temporary Redirect ao acessar `/dashboard`
+
+**Causa mais comum**: A variável `NEXTAUTH_URL` não está configurada ou está incorreta na Vercel
+
+**Solução**:
+1. ✅ Verifique se `NEXTAUTH_URL` está configurada com a URL **exata** da Vercel (ex: `https://avb-teste.vercel.app`)
+2. ✅ **IMPORTANTE**: A URL deve começar com `https://` (não `http://`)
+3. ✅ Certifique-se de que fez o **redeploy** após adicionar as variáveis
+4. ✅ Verifique se `NEXTAUTH_SECRET` está configurada e é a mesma do ambiente local
+5. ✅ Verifique os logs da Vercel em **Deployments** → selecione o deploy → **Functions** → `/api/auth/[...nextauth]`
+6. ✅ Limpe o cache do navegador e tente novamente
+7. ✅ Verifique no console do navegador (F12) se há erros de CORS ou cookies
 
 ### Erro de conexão com banco de dados
 - ✅ Verifique se `DATABASE_URL` está correta

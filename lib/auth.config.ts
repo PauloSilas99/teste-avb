@@ -34,6 +34,7 @@ export const authConfig: NextAuthConfig = {
             return null
           }
 
+          // Retornar dados do usuário - NextAuth vai criar o JWT
           return {
             id: usuario.id,
             email: usuario.email,
@@ -48,9 +49,11 @@ export const authConfig: NextAuthConfig = {
   ],
   session: {
     strategy: "jwt" as const,
+    maxAge: 30 * 24 * 60 * 60, // 30 dias
   },
   callbacks: {
     async jwt({ token, user }: any) {
+      // Quando o usuário faz login, adicionar dados ao token
       if (user) {
         token.id = user.id
         token.email = user.email
@@ -59,6 +62,7 @@ export const authConfig: NextAuthConfig = {
       return token
     },
     async session({ session, token }: any) {
+      // Adicionar dados do token à sessão
       if (session.user && token) {
         session.user.id = token.id as string
         session.user.email = token.email as string

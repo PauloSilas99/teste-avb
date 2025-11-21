@@ -73,4 +73,3 @@ export const authConfig: NextAuthConfig = {
   },
   trustHost: true,
 }
-

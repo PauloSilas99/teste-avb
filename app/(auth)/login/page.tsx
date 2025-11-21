@@ -17,26 +17,23 @@ export default function Login() {
     setCarregando(true)
 
     try {
+      // Usar redirect: true para que o NextAuth gerencie o redirecionamento automaticamente
+      // Isso garante que o cookie de sessão seja definido corretamente antes do redirecionamento
       const result = await signIn("credentials", {
         email,
         senha,
-        redirect: false,
-      })
+        redirect: true,
+        callbackUrl: "/dashboard",
+      }) as { error?: string } | void
 
-      if (result?.error) {
+      // Quando redirect: true, o signIn retorna void em caso de sucesso (redireciona automaticamente)
+      // ou um objeto com error em caso de falha
+      if (result && "error" in result) {
         setErro("Email ou senha incorretos")
         setCarregando(false)
-      } else if (result?.ok) {
-        console.log("Login bem-sucedido, redirecionando para /dashboard")
-        // Login bem-sucedido - aguardar um breve momento para o cookie ser definido
-        // Usar window.location.href para forçar reload completo da página
-        await new Promise(resolve => setTimeout(resolve, 150))
-        window.location.href = "/dashboard"
-      } else {
-        console.error("Login falhou sem erro específico:", result)
-        setErro("Erro ao fazer login. Tente novamente.")
-        setCarregando(false)
       }
+      // Se não houver erro, o NextAuth cuida do redirecionamento automaticamente
+      // Com redirect: true, não precisamos fazer redirecionamento manual
     } catch (error) {
       console.error("Erro ao fazer login:", error)
       setErro("Erro ao fazer login. Tente novamente.")

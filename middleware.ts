@@ -6,7 +6,11 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   
   // Rotas públicas
-  const isPublicRoute = pathname === "/login" || pathname === "/register" || pathname.startsWith("/api/auth/")
+  const isPublicRoute = 
+    pathname === "/login" || 
+    pathname === "/register" || 
+    pathname.startsWith("/api/auth/") ||
+    pathname.startsWith("/api/health/")
   
   // Usar getToken que é leve e não importa toda a configuração do NextAuth
   // Deixar o getToken detectar automaticamente o nome do cookie

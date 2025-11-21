@@ -9,8 +9,8 @@ export default function Providers({
 }) {
   return (
     <SessionProvider
-      refetchInterval={0}
-      refetchOnWindowFocus={false}
+      refetchInterval={5 * 60} // Refetch a cada 5 minutos
+      refetchOnWindowFocus={true} // Refetch quando a janela ganha foco
     >
       {children}
     </SessionProvider>

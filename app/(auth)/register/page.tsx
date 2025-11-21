@@ -1,8 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { UserIcon, EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline"
 
@@ -12,15 +11,6 @@ export default function Register() {
   const [senha, setSenha] = useState("")
   const [erro, setErro] = useState("")
   const [carregando, setCarregando] = useState(false)
-  const router = useRouter()
-
-  // Prevenir voltar para páginas protegidas
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Substituir o estado atual no histórico para prevenir voltar
-      window.history.replaceState(null, '', window.location.href)
-    }
-  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -54,13 +44,22 @@ export default function Register() {
 
       if (result?.error) {
         // Se o login automático falhar, redireciona para /login
-        router.replace("/login")
+        setTimeout(() => {
+          window.location.href = "/login"
+        }, 100)
       } else if (result?.ok) {
-        router.replace("/dashboard")
+        // Login bem-sucedido - aguardar um momento para o cookie ser definido
+        // Não resetar carregando para manter o estado visual durante o redirect
+        setTimeout(() => {
+          window.location.href = "/dashboard"
+        }, 100)
+      } else {
+        setErro("Conta criada, mas erro ao fazer login. Faça login manualmente.")
+        setCarregando(false)
       }
     } catch (error) {
+      console.error("Erro ao registrar usuário:", error)
       setErro("Erro ao registrar usuário. Tente novamente.")
-    } finally {
       setCarregando(false)
     }
   }

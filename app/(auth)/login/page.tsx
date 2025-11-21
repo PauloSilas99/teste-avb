@@ -1,8 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline"
 
@@ -11,15 +10,6 @@ export default function Login() {
   const [senha, setSenha] = useState("")
   const [erro, setErro] = useState("")
   const [carregando, setCarregando] = useState(false)
-  const router = useRouter()
-
-  // Prevenir voltar para páginas protegidas após logout
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Substituir o estado atual no histórico para prevenir voltar
-      window.history.replaceState(null, '', window.location.href)
-    }
-  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,22 +24,21 @@ export default function Login() {
       })
 
       if (result?.error) {
-        console.error("Erro no login:", result.error)
         setErro("Email ou senha incorretos")
+        setCarregando(false)
       } else if (result?.ok) {
-        console.log("Login bem-sucedido, redirecionando...")
-        // Aguardar um breve momento para garantir que o cookie foi definido
-        await new Promise(resolve => setTimeout(resolve, 100))
-        // Forçar reload completo para garantir que o cookie seja lido pelo middleware
-        window.location.href = "/dashboard"
+        // Login bem-sucedido - aguardar um momento para o cookie ser definido
+        // Não resetar carregando para manter o estado visual durante o redirect
+        setTimeout(() => {
+          window.location.href = "/dashboard"
+        }, 100)
       } else {
-        console.error("Login falhou sem erro específico:", result)
         setErro("Erro ao fazer login. Tente novamente.")
+        setCarregando(false)
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error)
       setErro("Erro ao fazer login. Tente novamente.")
-    } finally {
       setCarregando(false)
     }
   }
